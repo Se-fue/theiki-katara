@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://b0w2u1ua7vhtj"]
 
 [ext_resource type="PackedScene" uid="uid://bg0c6wd6xhdsp" path="res://Characters/J1/jugador_1.tscn" id="1_nc306"]
-[ext_resource type="Texture2D" uid="uid://dbxqgve28td6i" path="res://icon.svg" id="2_0xe4c"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_bhunq"]
 
@@ -23,15 +22,3 @@ shape = SubResource("RectangleShape2D_bhunq")
 
 [node name="Jugador1" parent="." unique_id=688873399 instance=ExtResource("1_nc306")]
 position = Vector2(549, 505)
-
-[node name="Icon" type="Sprite2D" parent="." unique_id=1394155756]
-position = Vector2(244, 320)
-texture = ExtResource("2_0xe4c")
-
-[node name="Icon2" type="Sprite2D" parent="." unique_id=617355563]
-position = Vector2(868, 287)
-texture = ExtResource("2_0xe4c")
-
-[node name="Icon3" type="Sprite2D" parent="." unique_id=981254]
-position = Vector2(554, 331)
-texture = ExtResource("2_0xe4c")

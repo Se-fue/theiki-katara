@@ -12,7 +12,6 @@ enum state{
 	Atack
 }
 
-
 var mira
 	
 var currentCharacter : CharacterBody2D;
