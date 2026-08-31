@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bg0c6wd6xhdsp"]
 
 [ext_resource type="Texture2D" uid="uid://q0j7sta1ydfr" path="res://Characters/J1/Idle/Idle.png" id="1_54x30"]
+[ext_resource type="Script" uid="uid://b353wcjwinrax" path="res://Characters/J1/control_j_1.gd" id="2_p7vqi"]
 
 [sub_resource type="GDScript" id="GDScript_54x30"]
 script/source = "extends CharacterBody2D
@@ -128,3 +129,6 @@ animation = &"Idle"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2018023229]
 position = Vector2(-9, 3)
+
+[node name="ControlJ1" type="Node" parent="." unique_id=936180881]
+script = ExtResource("2_p7vqi")
