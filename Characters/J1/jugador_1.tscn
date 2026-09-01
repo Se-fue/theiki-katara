@@ -201,7 +201,7 @@ shape = SubResource("CapsuleShape2D_qr0ht")
 texture_filter = 1
 position = Vector2(-4, -8)
 sprite_frames = SubResource("SpriteFrames_6f8o3")
-animation = &"Walk"
+animation = &"Idle"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2018023229]
 position = Vector2(2, 4)
