@@ -7,7 +7,7 @@
 script/source = "extends CharacterBody2D
 
 
-const SPEED = 300.0
+const SPEED = 140.0
 const JUMP_VELOCITY = -510.0
 
 enum ESTADOS {
@@ -50,9 +50,14 @@ func _physics_process(delta: float) -> void:
 		$AnimatedSprite2D.scale.x = 1
 		
 	if direction:
-		velocity.x = direction * SPEED
-
+		var current_speed = SPEED
+		velocity.x = direction * current_speed
+		if Input.is_action_pressed(\"Sprint\"):
+			current_speed = SPEED * 2.2
+		velocity.x = current_speed * direction
 		if is_on_floor():
+			if Input.is_action_pressed(\"Sprint\"):
+				$AnimatedSprite2D.play(\"Run\")
 			$AnimatedSprite2D.play(\"Walk\")
 
 	else:
@@ -62,22 +67,7 @@ func _physics_process(delta: float) -> void:
 			$AnimatedSprite2D.play(\"Idle\")
 			$AnimatedSprite2D.scale.x = mira
 
-	# Correr
-	var directionR := Input.get_axis(\"ShiftA\", \"ShiftD\")
 
-	if directionR > 0:
-		mira = -1
-		$AnimatedSprite2D.scale.x = -1
-		
-	elif directionR < 0:
-		mira = 1
-		$AnimatedSprite2D.scale.x = 1
-
-	if directionR:
-		velocity.x = directionR * SPEED * 2.25
-
-		if is_on_floor():
-			$AnimatedSprite2D.play(\"Run\")
 
 	move_and_slide()
 "
@@ -108,35 +98,35 @@ region = Rect2(200, 0, 50, 65)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kspaw"]
 atlas = ExtResource("2_pcu4k")
-region = Rect2(0, 0, 50, 62)
+region = Rect2(0, 0, 50, 65)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_50rxv"]
 atlas = ExtResource("2_pcu4k")
-region = Rect2(50, 0, 50, 62)
+region = Rect2(50, 0, 50, 65)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qvnm1"]
 atlas = ExtResource("2_pcu4k")
-region = Rect2(100, 0, 50, 62)
+region = Rect2(100, 0, 50, 65)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1g5q1"]
 atlas = ExtResource("2_pcu4k")
-region = Rect2(150, 0, 50, 62)
+region = Rect2(150, 0, 50, 65)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8igdd"]
 atlas = ExtResource("2_pcu4k")
-region = Rect2(200, 0, 50, 62)
+region = Rect2(200, 0, 50, 65)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ydqf3"]
 atlas = ExtResource("2_pcu4k")
-region = Rect2(250, 0, 50, 62)
+region = Rect2(250, 0, 50, 65)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_chxvm"]
 atlas = ExtResource("2_pcu4k")
-region = Rect2(300, 0, 50, 62)
+region = Rect2(300, 0, 50, 65)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mbcs1"]
 atlas = ExtResource("2_pcu4k")
-region = Rect2(350, 0, 50, 62)
+region = Rect2(350, 0, 50, 65)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_6f8o3"]
 animations = [{
@@ -156,7 +146,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vrl6k")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Idle",
 "speed": 2.0
 }, {
@@ -185,7 +175,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_mbcs1")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Walk",
 "speed": 5.0
 }]
@@ -199,9 +189,10 @@ shape = SubResource("CapsuleShape2D_qr0ht")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=486214308]
 texture_filter = 1
-position = Vector2(-4, -8)
+position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_6f8o3")
-animation = &"Idle"
+animation = &"Walk"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2018023229]
-position = Vector2(2, 4)
+position = Vector2(0, -29)
+zoom = Vector2(2.2, 2.2)
