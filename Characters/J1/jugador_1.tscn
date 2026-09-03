@@ -53,7 +53,7 @@ func _physics_process(delta: float) -> void:
 		var current_speed = SPEED
 		velocity.x = direction * current_speed
 		if Input.is_action_pressed(\"Sprint\"):
-			current_speed = SPEED * 2.2
+			current_speed = SPEED * 2.245
 		velocity.x = current_speed * direction
 		if is_on_floor():
 			if Input.is_action_pressed(\"Sprint\"):
@@ -181,6 +181,7 @@ animations = [{
 }]
 
 [node name="Jugador1" type="CharacterBody2D" unique_id=688873399]
+scale = Vector2(0.7, 0.7)
 script = SubResource("GDScript_54x30")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=732953865]
