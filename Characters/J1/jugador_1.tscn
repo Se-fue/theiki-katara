@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bg0c6wd6xhdsp"]
 
 [ext_resource type="Texture2D" uid="uid://q0j7sta1ydfr" path="res://Characters/J1/Idle/Idle.png" id="1_54x30"]
+[ext_resource type="Texture2D" uid="uid://comdorfnwtle5" path="res://Characters/J1/Run/Run.png" id="2_iukwe"]
 [ext_resource type="Texture2D" uid="uid://cluaiyi6dd0oj" path="res://Characters/J1/Walk/Walk.png" id="2_pcu4k"]
 
 [sub_resource type="GDScript" id="GDScript_54x30"]
@@ -58,7 +59,8 @@ func _physics_process(delta: float) -> void:
 		if is_on_floor():
 			if Input.is_action_pressed(\"Sprint\"):
 				$AnimatedSprite2D.play(\"Run\")
-			$AnimatedSprite2D.play(\"Walk\")
+			else:
+				$AnimatedSprite2D.play(\"Walk\")
 
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
@@ -95,6 +97,34 @@ region = Rect2(150, 0, 50, 65)
 [sub_resource type="AtlasTexture" id="AtlasTexture_vrl6k"]
 atlas = ExtResource("1_54x30")
 region = Rect2(200, 0, 50, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yaliy"]
+atlas = ExtResource("2_iukwe")
+region = Rect2(0, 0, 60, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1d2pg"]
+atlas = ExtResource("2_iukwe")
+region = Rect2(60, 0, 60, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u85fc"]
+atlas = ExtResource("2_iukwe")
+region = Rect2(120, 0, 60, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cfsbm"]
+atlas = ExtResource("2_iukwe")
+region = Rect2(180, 0, 60, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n7s3h"]
+atlas = ExtResource("2_iukwe")
+region = Rect2(240, 0, 60, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_42yp2"]
+atlas = ExtResource("2_iukwe")
+region = Rect2(300, 0, 60, 65)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7m55m"]
+atlas = ExtResource("2_iukwe")
+region = Rect2(360, 0, 60, 65)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kspaw"]
 atlas = ExtResource("2_pcu4k")
@@ -152,6 +182,32 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_yaliy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1d2pg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u85fc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cfsbm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n7s3h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_42yp2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7m55m")
+}],
+"loop": 1,
+"name": &"Run",
+"speed": 18.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_kspaw")
 }, {
 "duration": 1.0,
@@ -192,8 +248,9 @@ shape = SubResource("CapsuleShape2D_qr0ht")
 texture_filter = 1
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_6f8o3")
-animation = &"Walk"
+animation = &"Run"
+frame_progress = 0.9607232
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2018023229]
 position = Vector2(0, -29)
-zoom = Vector2(2.2, 2.2)
+zoom = Vector2(2.5, 2.5)
