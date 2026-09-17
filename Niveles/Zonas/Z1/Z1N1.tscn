@@ -2,6 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://cvxmlolpvvv7k" path="res://Niveles/Zonas/cespedt.png" id="1_pp0y0"]
 [ext_resource type="PackedScene" uid="uid://bg0c6wd6xhdsp" path="res://Characters/J1/jugador_1.tscn" id="2_7maf5"]
+[ext_resource type="PackedScene" path="res://Characters/EnemyShadow/enemy_shadow.tscn" id="3_enemy"]
+[ext_resource type="PackedScene" path="res://Characters/EnemyWraith/enemy_wraith.tscn" id="4_wraith"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7maf5"]
 texture = ExtResource("1_pp0y0")
@@ -203,3 +205,9 @@ tile_set = SubResource("TileSet_bhunq")
 
 [node name="Jugador1" parent="." unique_id=688873399 instance=ExtResource("2_7maf5")]
 position = Vector2(-181, 560)
+
+[node name="EnemyShadow" parent="." unique_id=821219788 instance=ExtResource("3_enemy")]
+position = Vector2(-56, 569)
+
+[node name="EnemyWraith" parent="." unique_id=1176570698 instance=ExtResource("4_wraith")]
+position = Vector2(58, 558)

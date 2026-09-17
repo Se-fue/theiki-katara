@@ -5,6 +5,17 @@
 [ext_resource type="Texture2D" uid="uid://comdorfnwtle5" path="res://Characters/J1/Run/Run.png" id="2_iukwe"]
 [ext_resource type="Texture2D" uid="uid://cluaiyi6dd0oj" path="res://Characters/J1/Walk/Walk.png" id="2_pcu4k"]
 [ext_resource type="Script" uid="uid://8jqayxqk15ck" path="res://Characters/J1/timer.gd" id="5_h2xnl"]
+[ext_resource type="Script" uid="uid://cbm7b2tady4lh" path="res://Characters/J1/player_combat.gd" id="6_combat"]
+[ext_resource type="Texture2D" uid="uid://cbakcumt6peei" path="res://Characters/J1/Attack/Attack_Left_00.png" id="atk_l0"]
+[ext_resource type="Texture2D" uid="uid://d26ndhk0pvuo6" path="res://Characters/J1/Attack/Attack_Left_01.png" id="atk_l1"]
+[ext_resource type="Texture2D" uid="uid://3ilwlpv32lkl" path="res://Characters/J1/Attack/Attack_Left_02.png" id="atk_l2"]
+[ext_resource type="Texture2D" uid="uid://bs0i8r3ryx78l" path="res://Characters/J1/Attack/Attack_Left_03.png" id="atk_l3"]
+[ext_resource type="Texture2D" uid="uid://1pqjpaf4hrkq" path="res://Characters/J1/Attack/Attack_Left_04.png" id="atk_l4"]
+[ext_resource type="Texture2D" uid="uid://b003caeks6vv6" path="res://Characters/J1/Attack/Attack_Right_00.png" id="atk_r0"]
+[ext_resource type="Texture2D" uid="uid://fs2phocxo8fo" path="res://Characters/J1/Attack/Attack_Right_01.png" id="atk_r1"]
+[ext_resource type="Texture2D" uid="uid://bxm5yjmaaoee4" path="res://Characters/J1/Attack/Attack_Right_02.png" id="atk_r2"]
+[ext_resource type="Texture2D" uid="uid://cuto0wch5lgnf" path="res://Characters/J1/Attack/Attack_Right_03.png" id="atk_r3"]
+[ext_resource type="Texture2D" uid="uid://cuyw3trkqq0lk" path="res://Characters/J1/Attack/Attack_Right_04.png" id="atk_r4"]
 
 [sub_resource type="GDScript" id="GDScript_54x30"]
 script/source = "extends CharacterBody2D
@@ -24,7 +35,10 @@ enum mov_states {
 
 #CORREGIDO: mira ahora empieza con un valor para evitar que sea Nil
 var mira = 1
+var facing_direction := 1 # 1 = izquierda, -1 = derecha; conserva la última dirección
 var actual_state = mov_states.idle
+var attacking := false
+var attack_hit_done := false
 
 #Salto variables
 @onready var jump_force : int = -500
@@ -33,6 +47,13 @@ var actual_state = mov_states.idle
 @onready var actual_jump_press : float = 0.0
 
 func _physics_process(delta: float) -> void:
+	if Input.is_action_just_pressed(\"Atack\") and not attacking:
+		_start_attack()
+
+	if attacking:
+		velocity.x = move_toward(velocity.x, 0.0, SPEED * 8.0 * delta)
+		move_and_slide()
+		return
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -56,10 +77,12 @@ func _physics_process(delta: float) -> void:
 	
 	if direction > 0:
 		mira = -1
+		facing_direction = -1
 		$AnimatedSprite2D.scale.x = -1
 		
 	elif direction < 0:
 		mira = 1
+		facing_direction = 1
 		$AnimatedSprite2D.scale.x = 1
 		
 	if direction:
@@ -85,6 +108,24 @@ func _physics_process(delta: float) -> void:
 
 
 	move_and_slide()
+
+func _start_attack() -> void:
+	attacking = true
+	attack_hit_done = false
+	$AnimatedSprite2D.visible = false
+	$AttackSprite.visible = true
+	$AttackSprite.flip_h = false
+	# Usa únicamente la última dirección en la que se movió el jugador.
+	if facing_direction < 0:
+		$AttackSprite.play(\"AttackRight\")
+	else:
+		$AttackSprite.play(\"AttackLeft\")
+	await $AttackSprite.animation_finished
+	$AttackSprite.stop()
+	$AttackSprite.visible = false
+	$AnimatedSprite2D.visible = true
+	attacking = false
+
 "
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qr0ht"]
@@ -215,7 +256,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_hqm4r")
 }],
-"loop": 1,
+"loop": true,
 "name": &"Fall",
 "speed": 5.0
 }, {
@@ -235,7 +276,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vrl6k")
 }],
-"loop": 1,
+"loop": true,
 "name": &"Idle",
 "speed": 2.0
 }, {
@@ -255,7 +296,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_2anxu")
 }],
-"loop": 1,
+"loop": true,
 "name": &"Jump",
 "speed": 10.0
 }, {
@@ -281,7 +322,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7m55m")
 }],
-"loop": 1,
+"loop": true,
 "name": &"Run",
 "speed": 18.0
 }, {
@@ -310,9 +351,52 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_mbcs1")
 }],
-"loop": 1,
+"loop": true,
 "name": &"Walk",
 "speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_attack"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("atk_l0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("atk_l1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("atk_l2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("atk_l3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("atk_l4")
+}],
+"loop": false,
+"name": &"AttackLeft",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("atk_r0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("atk_r1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("atk_r2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("atk_r3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("atk_r4")
+}],
+"loop": false,
+"name": &"AttackRight",
+"speed": 10.0
 }]
 
 [node name="Jugador1" type="CharacterBody2D" unique_id=688873399]
@@ -329,6 +413,13 @@ position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_6f8o3")
 animation = &"Jump"
 
+[node name="AttackSprite" type="AnimatedSprite2D" parent="." unique_id=1451678998]
+visible = false
+texture_filter = 1
+position = Vector2(0, -8)
+sprite_frames = SubResource("SpriteFrames_attack")
+animation = &"AttackLeft"
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2018023229]
 position = Vector2(0, -7.1428604)
 zoom = Vector2(2.5, 2.5)
@@ -337,3 +428,6 @@ zoom = Vector2(2.5, 2.5)
 wait_time = 0.425
 one_shot = true
 script = ExtResource("5_h2xnl")
+
+[node name="PlayerCombat" type="Node" parent="." unique_id=1223840403]
+script = ExtResource("6_combat")
