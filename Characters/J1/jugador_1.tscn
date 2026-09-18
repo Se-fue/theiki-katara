@@ -1,13 +1,11 @@
 [gd_scene format=3 uid="uid://bg0c6wd6xhdsp"]
 
 [ext_resource type="Texture2D" uid="uid://q0j7sta1ydfr" path="res://Characters/J1/Idle/Idle.png" id="1_54x30"]
-[ext_resource type="Script" uid="uid://kwsxaxkghaln" path="res://Characters/State.gd" id="1_u85fc"]
 [ext_resource type="Texture2D" uid="uid://bwrnrfgqq657k" path="res://Characters/J1/Jump_Fall/jump_fall.png" id="2_h2xnl"]
 [ext_resource type="Texture2D" uid="uid://comdorfnwtle5" path="res://Characters/J1/Run/Run.png" id="2_iukwe"]
 [ext_resource type="Texture2D" uid="uid://cluaiyi6dd0oj" path="res://Characters/J1/Walk/Walk.png" id="2_pcu4k"]
 [ext_resource type="Script" uid="uid://8jqayxqk15ck" path="res://Characters/J1/timer.gd" id="5_h2xnl"]
 [ext_resource type="Script" uid="uid://cbm7b2tady4lh" path="res://Characters/J1/player_combat.gd" id="6_combat"]
-[ext_resource type="Script" uid="uid://bpcdutgyj6jq0" path="res://Characters/J1/codigo pa despues.gd" id="18_cfsbm"]
 [ext_resource type="Texture2D" uid="uid://cbakcumt6peei" path="res://Characters/J1/Attack/Attack_Left_00.png" id="atk_l0"]
 [ext_resource type="Texture2D" uid="uid://d26ndhk0pvuo6" path="res://Characters/J1/Attack/Attack_Left_01.png" id="atk_l1"]
 [ext_resource type="Texture2D" uid="uid://3ilwlpv32lkl" path="res://Characters/J1/Attack/Attack_Left_02.png" id="atk_l2"]
@@ -18,6 +16,121 @@
 [ext_resource type="Texture2D" uid="uid://bxm5yjmaaoee4" path="res://Characters/J1/Attack/Attack_Right_02.png" id="atk_r2"]
 [ext_resource type="Texture2D" uid="uid://cuto0wch5lgnf" path="res://Characters/J1/Attack/Attack_Right_03.png" id="atk_r3"]
 [ext_resource type="Texture2D" uid="uid://cuyw3trkqq0lk" path="res://Characters/J1/Attack/Attack_Right_04.png" id="atk_r4"]
+
+[sub_resource type="GDScript" id="GDScript_54x30"]
+script/source = "extends CharacterBody2D
+
+const SPEED = 140.0
+
+
+enum mov_states {
+	idle,
+	walk,
+	run,
+	jump,
+	fall,
+	dash,
+	wall_slide
+}
+
+#CORREGIDO: mira ahora empieza con un valor para evitar que sea Nil
+var mira = 1
+var facing_direction := 1 # 1 = izquierda, -1 = derecha; conserva la última dirección
+var actual_state = mov_states.idle
+var attacking := false
+var attack_hit_done := false
+
+#Salto variables
+@onready var jump_force : int = -500
+@onready var max_jump_time : float = 0.5
+@onready var start_jump : float = 0.3
+@onready var actual_jump_press : float = 0.0
+@onready var dash : int = 120
+
+func _physics_process(delta: float) -> void:
+	if Input.is_action_just_pressed(\"Atack\") and not attacking:
+		_start_attack()
+	if  Input.is_action_just_pressed(\"Sprint\") :
+		if mira > 0:
+			position.x = position.x + dash * -1
+		else:
+			position.x = position.x + dash * 1
+	if attacking:
+		velocity.x = move_toward(velocity.x, 0.0, SPEED * 8.0 * delta)
+		move_and_slide()
+		return
+	# Add the gravity.
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+		
+	if velocity.y > 0:
+		$AnimatedSprite2D.play(\"Fall\")
+		$AnimatedSprite2D.scale.x = mira
+	else:
+		$AnimatedSprite2D.play(\"Jump\")
+		$AnimatedSprite2D.scale.x = mira
+
+	# Handle jump.
+	if Input.is_action_just_released(\"Jump\") and velocity.y < 0:
+		velocity.y = jump_force / 10
+	if Input.is_action_just_pressed(\"Jump\") and is_on_floor():
+		velocity.y = jump_force
+		
+	# Get the input direction and handle the movement/deceleration.
+	# As good practicei, you should replace UI actions with custom gameplay actions.
+	var direction := Input.get_axis(\"Left\", \"Right\")
+	
+	if direction > 0:
+		mira = -1
+		facing_direction = -1
+		$AnimatedSprite2D.scale.x = -1
+		
+	elif direction < 0:
+		mira = 1
+		facing_direction = 1
+		$AnimatedSprite2D.scale.x = 1
+		
+	if direction:
+		var current_speed = SPEED
+		velocity.x = direction * current_speed
+		if Input.is_action_pressed(\"Sprint\"):
+			current_speed = SPEED * 2.7
+			
+		velocity.x = current_speed * direction
+		if is_on_floor():
+			if Input.is_action_pressed(\"Sprint\"):
+				$AnimatedSprite2D.play(\"Run\")
+			else:
+				$AnimatedSprite2D.play(\"Walk\")
+
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+
+		if is_on_floor():
+			$AnimatedSprite2D.play(\"Idle\")
+			$AnimatedSprite2D.scale.x = mira
+
+
+
+	move_and_slide()
+
+func _start_attack() -> void:
+	attacking = true
+	attack_hit_done = false
+	$AnimatedSprite2D.visible = false
+	$AttackSprite.visible = true
+	$AttackSprite.flip_h = false
+	# Usa únicamente la última dirección en la que se movió el jugador.
+	if facing_direction < 0:
+		$AttackSprite.play(\"AttackRight\")
+	else:
+		$AttackSprite.play(\"AttackLeft\")
+	await $AttackSprite.animation_finished
+	$AttackSprite.stop()
+	$AttackSprite.visible = false
+	$AnimatedSprite2D.visible = true
+	attacking = false
+"
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qr0ht"]
 radius = 9.0
@@ -292,7 +405,7 @@ animations = [{
 
 [node name="Jugador1" type="CharacterBody2D" unique_id=688873399]
 scale = Vector2(0.7, 0.7)
-script = ExtResource("1_u85fc")
+script = SubResource("GDScript_54x30")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=732953865]
 position = Vector2(0, -1)
@@ -316,12 +429,9 @@ position = Vector2(0, -7.1428604)
 zoom = Vector2(2.5, 2.5)
 
 [node name="JumpTimer" type="Timer" parent="." unique_id=977587002]
-wait_time = 0.045
+wait_time = 0.425
 one_shot = true
 script = ExtResource("5_h2xnl")
 
 [node name="PlayerCombat" type="Node" parent="." unique_id=1223840403]
 script = ExtResource("6_combat")
-
-[node name="Node" type="Node" parent="." unique_id=1112273172]
-script = ExtResource("18_cfsbm")
