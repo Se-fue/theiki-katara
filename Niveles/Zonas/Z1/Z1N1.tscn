@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://d22obquhp7j8j"]
 
-<<<<<<< Updated upstream
 [ext_resource type="Texture2D" uid="uid://bwrnrfgqq657k" path="res://Characters/J1/Jump_Fall/jump_fall.png" id="1_43cke"]
 [ext_resource type="Texture2D" uid="uid://q0j7sta1ydfr" path="res://Characters/J1/Idle/Idle.png" id="2_7i5rq"]
 [ext_resource type="Texture2D" uid="uid://comdorfnwtle5" path="res://Characters/J1/Run/Run.png" id="3_e3n7h"]
@@ -17,11 +16,6 @@
 [ext_resource type="Texture2D" uid="uid://cuyw3trkqq0lk" path="res://Characters/J1/Attack/Attack_Right_04.png" id="14_w5qv7"]
 [ext_resource type="Script" uid="uid://8jqayxqk15ck" path="res://Characters/J1/timer.gd" id="15_bglla"]
 [ext_resource type="Script" uid="uid://cbm7b2tady4lh" path="res://Characters/J1/player_combat.gd" id="16_boggj"]
-=======
-[ext_resource type="Texture2D" uid="uid://cvxmlolpvvv7k" path="res://Niveles/Zonas/cespedt.png" id="1_pp0y0"]
-[ext_resource type="PackedScene" uid="uid://bg0c6wd6xhdsp" path="res://Characters/J1/jugador_1.tscn" id="2_7maf5"]
-[ext_resource type="PackedScene" path="res://Characters/EnemyWraith/enemy_wraith.tscn" id="4_wraith"]
->>>>>>> Stashed changes
 
 [sub_resource type="GDScript" id="GDScript_54x30"]
 script/source = "extends CharacterBody2D
@@ -42,28 +36,30 @@ enum mov_states {
 #CORREGIDO: mira ahora empieza con un valor para evitar que sea Nil
 var mira = 1
 var facing_direction := 1 # 1 = izquierda, -1 = derecha; conserva la última dirección
-var actual_state = 1
+var current_state = 1
 var attacking := false
 var attack_hit_done := false
-var anterior_state = actual_state
+var anterior_state = 0
+var current_speed = 0
 #Salto variables
 @onready var jump_force : int = -500
 @onready var max_jump_time : float = 0.5
 @onready var start_jump : float = 0.3
 @onready var actual_jump_press : float = 0.0
-@onready var dash_speed : int = 1700
-
-<<<<<<< Updated upstream
-
+@onready var dash_speed : int = 320
+@onready var dash_duration : int = 0.2
 
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed(\"Atack\") and not attacking:
 		_start_attack()
-	if  Input.is_action_just_pressed(\"Sprint\") :
-		if mira > 0:
-			velocity.x = dash_speed * -1
-		else:
-			velocity.x = dash_speed * 1
+		#DASHEO
+		
+		
+	if (dashing()):
+		current_speed = dash_speed
+	if Input.is_action_just_pressed(\"Sprint\"):
+		velocity.x = current_speed * mira * -1
+		start_dash()
 	if attacking:
 		velocity.x = move_toward(velocity.x, 0.0, SPEED * 8.0 * delta)
 		move_and_slide()
@@ -101,7 +97,7 @@ func _physics_process(delta: float) -> void:
 		$AnimatedSprite2D.scale.x = 1
 		
 	if direction:
-		var current_speed = SPEED
+		current_speed = SPEED
 		velocity.x = direction * current_speed
 		if Input.is_action_pressed(\"Sprint\"):
 			current_speed = SPEED * 2.7
@@ -119,16 +115,37 @@ func _physics_process(delta: float) -> void:
 		if is_on_floor():
 			$AnimatedSprite2D.play(\"Idle\")
 			$AnimatedSprite2D.scale.x = mira
-			actual_state = 1
-		else:
-			anterior_state = 1
 			
-	print(\"anterior_state\")
+	var estado_anterior_frame = current_state  # guarda el valor ANTES de recalcular
+
+	if is_on_floor():
+		if direction > 0 or direction < 0:
+			if Input.is_action_pressed(\"Sprint\"):
+				if anterior_state == 1:
+					$AnimatedSprite2D.play(\"Run\")
+				elif anterior_state == 2:
+					$AnimatedSprite2D.play(\"Run\")
+				current_state = 3
+			else:
+				current_state = 2
+		else:
+			current_state = 1
+
+	# Solo actualiza anterior_state si el estado CAMBIÓ
+	if current_state != estado_anterior_frame and estado_anterior_frame != 3:
+		anterior_state = estado_anterior_frame
+	
+	print (\"Estado actual: \", current_state)
+	print (\"Estado anterior: \", anterior_state)
 	
 
-
 	move_and_slide()
-
+func dashing():
+	return not $Timer.is_stopped()
+func start_dash():
+	$Timer.wait_time = dash_duration
+	$Timer.start()
+	
 func _start_attack() -> void:
 	attacking = true
 	attack_hit_done = false
@@ -443,14 +460,10 @@ animation = &"AttackLeft"
 position = Vector2(0, -7.1428604)
 zoom = Vector2(2.5, 2.5)
 
-[node name="JumpTimer" type="Timer" parent="." unique_id=977587002]
+[node name="Timer" type="Timer" parent="." unique_id=977587002]
 wait_time = 0.425
 one_shot = true
 script = ExtResource("15_bglla")
 
 [node name="PlayerCombat" type="Node" parent="." unique_id=1223840403]
 script = ExtResource("16_boggj")
-=======
-[node name="EnemyWraith" parent="." unique_id=1176570698 instance=ExtResource("4_wraith")]
-position = Vector2(58, 558)
->>>>>>> Stashed changes
