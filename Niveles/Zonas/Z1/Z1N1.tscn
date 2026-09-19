@@ -36,22 +36,27 @@ enum mov_states {
 #CORREGIDO: mira ahora empieza con un valor para evitar que sea Nil
 var mira = 1
 var facing_direction := 1 # 1 = izquierda, -1 = derecha; conserva la última dirección
-var actual_state = mov_states.idle
+var actual_state = 1
 var attacking := false
 var attack_hit_done := false
-
+var anterior_state = actual_state
 #Salto variables
 @onready var jump_force : int = -500
 @onready var max_jump_time : float = 0.5
 @onready var start_jump : float = 0.3
 @onready var actual_jump_press : float = 0.0
 @onready var dash_speed : int = 1700
-var current_speed = SPEED
+
+
+
 func _physics_process(delta: float) -> void:
-	
 	if Input.is_action_just_pressed(\"Atack\") and not attacking:
 		_start_attack()
-	
+	if  Input.is_action_just_pressed(\"Sprint\") :
+		if mira > 0:
+			velocity.x = dash_speed * -1
+		else:
+			velocity.x = dash_speed * 1
 	if attacking:
 		velocity.x = move_toward(velocity.x, 0.0, SPEED * 8.0 * delta)
 		move_and_slide()
@@ -89,7 +94,7 @@ func _physics_process(delta: float) -> void:
 		$AnimatedSprite2D.scale.x = 1
 		
 	if direction:
-		
+		var current_speed = SPEED
 		velocity.x = direction * current_speed
 		if Input.is_action_pressed(\"Sprint\"):
 			current_speed = SPEED * 2.7
@@ -107,6 +112,11 @@ func _physics_process(delta: float) -> void:
 		if is_on_floor():
 			$AnimatedSprite2D.play(\"Idle\")
 			$AnimatedSprite2D.scale.x = mira
+			actual_state = 1
+		else:
+			anterior_state = 1
+			
+	print(\"anterior_state\")
 	
 
 
