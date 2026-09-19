@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cluaiyi6dd0oj" path="res://Characters/J1/Walk/Walk.png" id="2_pcu4k"]
 [ext_resource type="Script" uid="uid://8jqayxqk15ck" path="res://Characters/J1/timer.gd" id="5_h2xnl"]
 [ext_resource type="Script" uid="uid://cbm7b2tady4lh" path="res://Characters/J1/player_combat.gd" id="6_combat"]
+[ext_resource type="Script" uid="uid://by4nmfnfo5dko" path="res://Characters/J1/player.gd" id="7_player"]
 [ext_resource type="Texture2D" uid="uid://cbakcumt6peei" path="res://Characters/J1/Attack/Attack_Left_00.png" id="atk_l0"]
 [ext_resource type="Texture2D" uid="uid://d26ndhk0pvuo6" path="res://Characters/J1/Attack/Attack_Left_01.png" id="atk_l1"]
 [ext_resource type="Texture2D" uid="uid://3ilwlpv32lkl" path="res://Characters/J1/Attack/Attack_Left_02.png" id="atk_l2"]
@@ -17,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://cuto0wch5lgnf" path="res://Characters/J1/Attack/Attack_Right_03.png" id="atk_r3"]
 [ext_resource type="Texture2D" uid="uid://cuyw3trkqq0lk" path="res://Characters/J1/Attack/Attack_Right_04.png" id="atk_r4"]
 
+<<<<<<< HEAD
 [sub_resource type="GDScript" id="GDScript_54x30"]
 script/source = "extends CharacterBody2D
 
@@ -133,6 +135,8 @@ func _start_attack() -> void:
 	attacking = false
 "
 
+=======
+>>>>>>> be3f31475f190e6e7f99ea4bbccdb419a6d81723
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qr0ht"]
 radius = 9.0
 height = 47.0
@@ -404,9 +408,11 @@ animations = [{
 "speed": 10.0
 }]
 
-[node name="Jugador1" type="CharacterBody2D" unique_id=688873399]
+[node name="Jugador1" type="CharacterBody2D" unique_id=688873399 groups=["player"]]
 scale = Vector2(0.7, 0.7)
-script = SubResource("GDScript_54x30")
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("7_player")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=732953865]
 position = Vector2(0, -1)
