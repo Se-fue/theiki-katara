@@ -45,9 +45,10 @@ var attack_hit_done := false
 @onready var max_jump_time : float = 0.5
 @onready var start_jump : float = 0.3
 @onready var actual_jump_press : float = 0.0
-@onready var dash : int = 1700
-
+@onready var dash_speed : int = 1700
+var current_speed = SPEED
 func _physics_process(delta: float) -> void:
+	
 	if Input.is_action_just_pressed(\"Atack\") and not attacking:
 		_start_attack()
 	
@@ -88,7 +89,7 @@ func _physics_process(delta: float) -> void:
 		$AnimatedSprite2D.scale.x = 1
 		
 	if direction:
-		var current_speed = SPEED
+		
 		velocity.x = direction * current_speed
 		if Input.is_action_pressed(\"Sprint\"):
 			current_speed = SPEED * 2.7
@@ -106,11 +107,7 @@ func _physics_process(delta: float) -> void:
 		if is_on_floor():
 			$AnimatedSprite2D.play(\"Idle\")
 			$AnimatedSprite2D.scale.x = mira
-	if Input.is_action_just_pressed(\"Sprint\"):
-		if mira > 0:
-			velocity.x = dash * -1
-		else:
-			velocity.x = dash * 1
+	
 
 
 	move_and_slide()
