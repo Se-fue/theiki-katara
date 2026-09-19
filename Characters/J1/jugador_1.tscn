@@ -4,7 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://bwrnrfgqq657k" path="res://Characters/J1/Jump_Fall/jump_fall.png" id="2_h2xnl"]
 [ext_resource type="Texture2D" uid="uid://comdorfnwtle5" path="res://Characters/J1/Run/Run.png" id="2_iukwe"]
 [ext_resource type="Texture2D" uid="uid://cluaiyi6dd0oj" path="res://Characters/J1/Walk/Walk.png" id="2_pcu4k"]
-[ext_resource type="Script" uid="uid://8jqayxqk15ck" path="res://Characters/J1/timer.gd" id="5_h2xnl"]
 [ext_resource type="Script" uid="uid://cbm7b2tady4lh" path="res://Characters/J1/player_combat.gd" id="6_combat"]
 [ext_resource type="Texture2D" uid="uid://cbakcumt6peei" path="res://Characters/J1/Attack/Attack_Left_00.png" id="atk_l0"]
 [ext_resource type="Texture2D" uid="uid://d26ndhk0pvuo6" path="res://Characters/J1/Attack/Attack_Left_01.png" id="atk_l1"]
@@ -46,18 +45,18 @@ var current_speed = 0
 @onready var max_jump_time : float = 0.5
 @onready var start_jump : float = 0.3
 @onready var actual_jump_press : float = 0.0
-@onready var dash_speed : int = 1700
+@onready var dash_speed : int = 570
+@onready var dash_duration : float = 0.41
 
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed(\"Atack\") and not attacking:
 		_start_attack()
 		#DASHEO
-		
-		
 	if (dashing()):
 		current_speed = dash_speed
-	if Input.is_action_just_pressed(\"Sprint\"):
-		velocity.x = current_speed * mira * -1
+		if Input.is_action_just_pressed(\"dash\"):
+			velocity.x = current_speed * mira * -1
+		
 	if attacking:
 		velocity.x = move_toward(velocity.x, 0.0, SPEED * 8.0 * delta)
 		move_and_slide()
@@ -135,13 +134,15 @@ func _physics_process(delta: float) -> void:
 	
 	print (\"Estado actual: \", current_state)
 	print (\"Estado anterior: \", anterior_state)
+	print (\"Hola\")
 	
 
 	move_and_slide()
 func dashing():
 	return not $Timer.is_stopped()
 func start_dashing():
-	
+	$Timer.wait_time = dash_duration
+	$Timer.start()
 func _start_attack() -> void:
 	attacking = true
 	attack_hit_done = false
@@ -158,7 +159,6 @@ func _start_attack() -> void:
 	$AttackSprite.visible = false
 	$AnimatedSprite2D.visible = true
 	attacking = false
-
 "
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qr0ht"]
@@ -457,10 +457,9 @@ animation = &"AttackLeft"
 position = Vector2(0, -7.1428604)
 zoom = Vector2(2.5, 2.5)
 
-[node name="Timer" type="Timer" parent="." unique_id=977587002]
-wait_time = 0.425
-one_shot = true
-script = ExtResource("5_h2xnl")
-
 [node name="PlayerCombat" type="Node" parent="." unique_id=1223840403]
 script = ExtResource("6_combat")
+
+[node name="Timer" type="Timer" parent="." unique_id=1102544752]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
