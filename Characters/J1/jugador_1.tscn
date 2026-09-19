@@ -46,8 +46,12 @@ var current_speed = 0
 @onready var max_jump_time : float = 0.5
 @onready var start_jump : float = 0.3
 @onready var actual_jump_press : float = 0.0
+<<<<<<< Updated upstream
 @onready var dash_speed : int = 700
 @onready var dash duration : int = 0.325
+=======
+@onready var dash_speed : int = 1700
+>>>>>>> Stashed changes
 
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed(\"Atack\") and not attacking:
@@ -142,8 +146,12 @@ func _physics_process(delta: float) -> void:
 func dashing():
 	return not $Timer.is_stopped()
 func start_dashing():
+<<<<<<< Updated upstream
 	$Timer.wait_time = 
 	$Timer
+=======
+	
+>>>>>>> Stashed changes
 func _start_attack() -> void:
 	attacking = true
 	attack_hit_done = false
@@ -160,6 +168,7 @@ func _start_attack() -> void:
 	$AttackSprite.visible = false
 	$AnimatedSprite2D.visible = true
 	attacking = false
+
 "
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qr0ht"]
