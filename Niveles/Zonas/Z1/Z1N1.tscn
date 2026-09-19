@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://d22obquhp7j8j"]
 
+<<<<<<< Updated upstream
 [ext_resource type="Texture2D" uid="uid://bwrnrfgqq657k" path="res://Characters/J1/Jump_Fall/jump_fall.png" id="1_43cke"]
 [ext_resource type="Texture2D" uid="uid://q0j7sta1ydfr" path="res://Characters/J1/Idle/Idle.png" id="2_7i5rq"]
 [ext_resource type="Texture2D" uid="uid://comdorfnwtle5" path="res://Characters/J1/Run/Run.png" id="3_e3n7h"]
@@ -16,6 +17,11 @@
 [ext_resource type="Texture2D" uid="uid://cuyw3trkqq0lk" path="res://Characters/J1/Attack/Attack_Right_04.png" id="14_w5qv7"]
 [ext_resource type="Script" uid="uid://8jqayxqk15ck" path="res://Characters/J1/timer.gd" id="15_bglla"]
 [ext_resource type="Script" uid="uid://cbm7b2tady4lh" path="res://Characters/J1/player_combat.gd" id="16_boggj"]
+=======
+[ext_resource type="Texture2D" uid="uid://cvxmlolpvvv7k" path="res://Niveles/Zonas/cespedt.png" id="1_pp0y0"]
+[ext_resource type="PackedScene" uid="uid://bg0c6wd6xhdsp" path="res://Characters/J1/jugador_1.tscn" id="2_7maf5"]
+[ext_resource type="PackedScene" path="res://Characters/EnemyWraith/enemy_wraith.tscn" id="4_wraith"]
+>>>>>>> Stashed changes
 
 [sub_resource type="GDScript" id="GDScript_54x30"]
 script/source = "extends CharacterBody2D
@@ -47,6 +53,7 @@ var anterior_state = actual_state
 @onready var actual_jump_press : float = 0.0
 @onready var dash_speed : int = 1700
 
+<<<<<<< Updated upstream
 
 
 func _physics_process(delta: float) -> void:
@@ -443,3 +450,7 @@ script = ExtResource("15_bglla")
 
 [node name="PlayerCombat" type="Node" parent="." unique_id=1223840403]
 script = ExtResource("16_boggj")
+=======
+[node name="EnemyWraith" parent="." unique_id=1176570698 instance=ExtResource("4_wraith")]
+position = Vector2(58, 558)
+>>>>>>> Stashed changes
