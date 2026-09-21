@@ -144,20 +144,37 @@ func start_dashing():
 	$Timer.wait_time = dash_duration
 	$Timer.start()
 func _start_attack() -> void:
+	# Bloquea el inicio de otro ataque hasta que termine la animación actual.
 	attacking = true
+	# Prepara la variable que puede utilizarse para controlar un golpe por ataque.
 	attack_hit_done = false
+	# Oculta temporalmente el sprite normal porque AttackSprite ya incluye
+	# el cuerpo completo del personaje realizando el movimiento de ataque.
 	$AnimatedSprite2D.visible = false
+	# Hace visible el nodo que contiene los fotogramas de ataque.
 	$AttackSprite.visible = true
-	$AttackSprite.flip_h = false
-	# Usa únicamente la última dirección en la que se movió el jugador.
-	if facing_direction < 0:
-		$AttackSprite.play(\"AttackRight\")
-	else:
-		$AttackSprite.play(\"AttackLeft\")
-	await $AttackSprite.animation_finished
+	# Detiene cualquier reproducción anterior para que no continúe desde
+	# un fotograma viejo cuando el jugador vuelve a presionar la tecla E.
 	$AttackSprite.stop()
+	# Fuerza que cada nuevo ataque comience exactamente en el primer fotograma.
+	$AttackSprite.frame = 0
+	# Se utiliza solamente AttackRight para evitar mezclar dos animaciones.
+	# La variable mira conserva la última dirección aunque el jugador esté quieto:
+	# mira > 0 significa que debe atacar hacia la izquierda, por lo que flip_h
+	# refleja horizontalmente los mismos fotogramas como si fueran un espejo.
+	# Si mira < 0, flip_h queda en false y el ataque se reproduce a la derecha.
+	$AttackSprite.flip_h = mira > 0
+	# Reproduce la única animación utilizada para los dos sentidos.
+	$AttackSprite.play(\"AttackRight\")
+	# Pausa esta función hasta que AnimatedSprite2D emita animation_finished.
+	await $AttackSprite.animation_finished
+	# Detiene el ataque al llegar a su último fotograma.
+	$AttackSprite.stop()
+	# Oculta AttackSprite para que no se quede visible después del golpe.
 	$AttackSprite.visible = false
+	# Vuelve a mostrar el sprite normal del jugador.
 	$AnimatedSprite2D.visible = true
+	# Permite que el jugador pueda iniciar el siguiente ataque.
 	attacking = false
 "
 

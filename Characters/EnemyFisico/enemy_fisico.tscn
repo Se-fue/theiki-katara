@@ -1,0 +1,142 @@
+[gd_scene load_steps=27 format=3]
+
+[ext_resource type="Script" path="res://Characters/EnemyFisico/enemy_fisico.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Idle/Idle_00.png" id="tex_2"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Idle/Idle_01.png" id="tex_3"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Idle/Idle_02.png" id="tex_4"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Idle/Idle_03.png" id="tex_5"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Idle/Idle_04.png" id="tex_6"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Idle/Idle_05.png" id="tex_7"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Run/Run_00.png" id="tex_8"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Run/Run_01.png" id="tex_9"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Run/Run_02.png" id="tex_10"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Run/Run_03.png" id="tex_11"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Run/Run_04.png" id="tex_12"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Run/Run_05.png" id="tex_13"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Run/Run_06.png" id="tex_14"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Run/Run_07.png" id="tex_15"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Attack/Attack_00.png" id="tex_16"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Attack/Attack_01.png" id="tex_17"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Attack/Attack_02.png" id="tex_18"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Attack/Attack_03.png" id="tex_19"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Attack/Attack_04.png" id="tex_20"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Attack/Attack_05.png" id="tex_21"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Attack/Attack_06.png" id="tex_22"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Attack/Attack_07.png" id="tex_23"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Attack/Attack_08.png" id="tex_24"]
+[ext_resource type="Texture2D" path="res://Characters/EnemyWraith/Attack/Attack_09.png" id="tex_25"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wraith"]
+radius = 14.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wraith"]
+animations = [
+{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("tex_2")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_3")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_4")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_5")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_6")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_7")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 8.0
+},{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("tex_8")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_9")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_10")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_11")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_12")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_13")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_14")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_15")
+}],
+"loop": true,
+"name": &"Run",
+"speed": 12.0
+},{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("tex_16")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_17")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_18")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_19")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_20")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_21")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_22")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_23")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_24")
+},{
+"duration": 1.0,
+"texture": ExtResource("tex_25")
+}],
+"loop": false,
+"name": &"Attack",
+"speed": 14.0
+}
+]
+
+[node name="EnemyFisico" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -10)
+shape = SubResource("CircleShape2D_wraith")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -46)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_wraith")
+animation = &"Idle"
+
+[node name="PlayerDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 0
