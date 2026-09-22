@@ -1,0 +1,330 @@
+[gd_scene format=3 uid="uid://bbi80v6awteco"]
+
+[ext_resource type="Script" uid="uid://lmnwglfici6y" path="res://UI/MenuPrincipal/menu_principal.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://ddo6x8oi6qnrx" path="res://UI/MenuPrincipal/fondo_menu.png" id="2_fondo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleButtonHover"]
+bg_color = Color(0.16, 0.08, 0.3, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.45, 0.9, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleButton"]
+bg_color = Color(0.04, 0.07, 0.15, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.55, 0.72, 0.8)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleButtonPressed"]
+bg_color = Color(0.09, 0.22, 0.3, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.65, 0.95, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StylePanel"]
+bg_color = Color(0.015, 0.025, 0.07, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.78, 0.9, 0.75)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.65)
+shadow_size = 16
+
+[sub_resource type="Theme" id="ThemeMenu"]
+default_font_size = 24
+Button/colors/font_color = Color(0.84, 0.94, 1, 1)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/font_sizes/font_size = 25
+Button/styles/focus = SubResource("StyleButtonHover")
+Button/styles/hover = SubResource("StyleButtonHover")
+Button/styles/normal = SubResource("StyleButton")
+Button/styles/pressed = SubResource("StyleButtonPressed")
+CheckButton/colors/font_color = Color(0.85, 0.93, 1, 1)
+CheckButton/font_sizes/font_size = 22
+Label/colors/font_color = Color(0.86, 0.93, 1, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0.95)
+Label/constants/shadow_offset_x = 3
+Label/constants/shadow_offset_y = 3
+PanelContainer/styles/panel = SubResource("StylePanel")
+
+[node name="MenuPrincipal" type="Control" unique_id=21179107]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("ThemeMenu")
+script = ExtResource("1_script")
+
+[node name="Fondo" type="TextureRect" parent="." unique_id=1777482466]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_fondo")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Oscurecer" type="ColorRect" parent="." unique_id=1234274585]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.005, 0.008, 0.025, 0.38)
+
+[node name="Centro" type="CenterContainer" parent="." unique_id=1494415901]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ContenidoPrincipal" type="VBoxContainer" parent="Centro" unique_id=770954699]
+custom_minimum_size = Vector2(510, 0)
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Titulo" type="Label" parent="Centro/ContenidoPrincipal" unique_id=102566933]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.95, 1, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.02, 0.16, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 64
+text = "THEÏKÍ KATÁRA"
+horizontal_alignment = 1
+
+[node name="Subtitulo" type="Label" parent="Centro/ContenidoPrincipal" unique_id=1333916495]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.66, 0.73, 0.9, 1)
+theme_override_font_sizes/font_size = 20
+text = "EL ECO DEL BOSQUE OLVIDADO"
+horizontal_alignment = 1
+
+[node name="MarcoMenu" type="PanelContainer" parent="Centro/ContenidoPrincipal" unique_id=1345229000]
+layout_mode = 2
+
+[node name="MargenMenu" type="MarginContainer" parent="Centro/ContenidoPrincipal/MarcoMenu" unique_id=1995633293]
+layout_mode = 2
+theme_override_constants/margin_left = 38
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 38
+theme_override_constants/margin_bottom = 32
+
+[node name="Botones" type="VBoxContainer" parent="Centro/ContenidoPrincipal/MarcoMenu/MargenMenu" unique_id=1858176903]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="BotonJugar" type="Button" parent="Centro/ContenidoPrincipal/MarcoMenu/MargenMenu/Botones" unique_id=1825954815]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+text = "JUGAR"
+
+[node name="BotonControles" type="Button" parent="Centro/ContenidoPrincipal/MarcoMenu/MargenMenu/Botones" unique_id=624905459]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+text = "CONTROLES"
+
+[node name="BotonOpciones" type="Button" parent="Centro/ContenidoPrincipal/MarcoMenu/MargenMenu/Botones" unique_id=1131392187]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+text = "OPCIONES"
+
+[node name="BotonCreditos" type="Button" parent="Centro/ContenidoPrincipal/MarcoMenu/MargenMenu/Botones" unique_id=613478765]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+text = "CRÉDITOS"
+
+[node name="BotonSalir" type="Button" parent="Centro/ContenidoPrincipal/MarcoMenu/MargenMenu/Botones" unique_id=1444466580]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+text = "SALIR"
+
+[node name="Ayuda" type="Label" parent="Centro/ContenidoPrincipal" unique_id=1833838448]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.7, 0.82, 1)
+theme_override_font_sizes/font_size = 16
+text = "Flechas/ratón para seleccionar  •  Enter para aceptar"
+horizontal_alignment = 1
+
+[node name="PanelControles" type="CenterContainer" parent="." unique_id=1104995171]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarcoControles" type="PanelContainer" parent="PanelControles" unique_id=953889790]
+custom_minimum_size = Vector2(580, 470)
+layout_mode = 2
+
+[node name="MargenControles" type="MarginContainer" parent="PanelControles/MarcoControles" unique_id=724545488]
+layout_mode = 2
+theme_override_constants/margin_left = 46
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 46
+theme_override_constants/margin_bottom = 40
+
+[node name="ContenidoControles" type="VBoxContainer" parent="PanelControles/MarcoControles/MargenControles" unique_id=2018589842]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Titulo" type="Label" parent="PanelControles/MarcoControles/MargenControles/ContenidoControles" unique_id=911786446]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "CONTROLES"
+horizontal_alignment = 1
+
+[node name="Texto" type="Label" parent="PanelControles/MarcoControles/MargenControles/ContenidoControles" unique_id=1637024981]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 23
+text = "A / D  —  Moverse
+W  —  Saltar
+Shift  —  Correr
+Q  —  Dash
+E  —  Atacar
+Esc  —  Volver"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BotonVolver" type="Button" parent="PanelControles/MarcoControles/MargenControles/ContenidoControles" unique_id=1211239045]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+text = "VOLVER"
+
+[node name="PanelOpciones" type="CenterContainer" parent="." unique_id=1953674925]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarcoOpciones" type="PanelContainer" parent="PanelOpciones" unique_id=1148190416]
+custom_minimum_size = Vector2(580, 410)
+layout_mode = 2
+
+[node name="MargenOpciones" type="MarginContainer" parent="PanelOpciones/MarcoOpciones" unique_id=1405673644]
+layout_mode = 2
+theme_override_constants/margin_left = 46
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 46
+theme_override_constants/margin_bottom = 40
+
+[node name="ContenidoOpciones" type="VBoxContainer" parent="PanelOpciones/MarcoOpciones/MargenOpciones" unique_id=1019147996]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Titulo" type="Label" parent="PanelOpciones/MarcoOpciones/MargenOpciones/ContenidoOpciones" unique_id=720206712]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "OPCIONES"
+horizontal_alignment = 1
+
+[node name="EtiquetaVolumen" type="Label" parent="PanelOpciones/MarcoOpciones/MargenOpciones/ContenidoOpciones" unique_id=166360360]
+layout_mode = 2
+text = "Volumen general"
+
+[node name="Volumen" type="HSlider" parent="PanelOpciones/MarcoOpciones/MargenOpciones/ContenidoOpciones" unique_id=1041703261]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="PantallaCompleta" type="CheckButton" parent="PanelOpciones/MarcoOpciones/MargenOpciones/ContenidoOpciones" unique_id=1235594816]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+text = "Pantalla completa"
+
+[node name="Separador" type="Control" parent="PanelOpciones/MarcoOpciones/MargenOpciones/ContenidoOpciones" unique_id=2082271811]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+
+[node name="BotonVolver" type="Button" parent="PanelOpciones/MarcoOpciones/MargenOpciones/ContenidoOpciones" unique_id=1984793424]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+text = "VOLVER"
+
+[node name="PanelCreditos" type="CenterContainer" parent="." unique_id=1086113789]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarcoCreditos" type="PanelContainer" parent="PanelCreditos" unique_id=1858347637]
+custom_minimum_size = Vector2(620, 430)
+layout_mode = 2
+
+[node name="MargenCreditos" type="MarginContainer" parent="PanelCreditos/MarcoCreditos" unique_id=32885118]
+layout_mode = 2
+theme_override_constants/margin_left = 46
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 46
+theme_override_constants/margin_bottom = 40
+
+[node name="ContenidoCreditos" type="VBoxContainer" parent="PanelCreditos/MarcoCreditos/MargenCreditos" unique_id=1167290536]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Titulo" type="Label" parent="PanelCreditos/MarcoCreditos/MargenCreditos/ContenidoCreditos" unique_id=1991235843]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "CRÉDITOS"
+horizontal_alignment = 1
+
+[node name="Texto" type="Label" parent="PanelCreditos/MarcoCreditos/MargenCreditos/ContenidoCreditos" unique_id=1045485874]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 23
+text = "THEÏKÍ KATÁRA
+
+Desarrollo del proyecto:
+Alejandro Hernández Montoya y Jordy Alan Lozoya Guerrero y Jassiel Gastelum Cossio equipo
+
+Creado con Godot Engine"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BotonVolver" type="Button" parent="PanelCreditos/MarcoCreditos/MargenCreditos/ContenidoCreditos" unique_id=572695947]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+text = "VOLVER"
