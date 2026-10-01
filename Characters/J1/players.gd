@@ -11,7 +11,7 @@ extends CharacterBody2D
 #FUERZA DEL DASH
 @onready var Dash_speed : float = 700
 #COOLDOWN DEL DASH
-@onready var Dash_CD : float = 0.125
+@onready var Dash_CD : float = 1700
 #GRAVEDAD
 @onready var Gravity : float = 0.02
 #DURACION DEL DASH
@@ -25,6 +25,8 @@ var current_speed = 0.0
 var is_dashing : bool = false
 # Bandera para saber si el dash está en cooldown
 var can_dash : bool = true
+#VARIABLE QUE DETECTA CUANDO FUE EL ULTIMO MOMENTO QUE SE USO EL DASH
+var last_dash = Time.get_ticks_msec()
 
 # ESTADOS DEL PERSONAJE
 enum mov_states {
@@ -132,6 +134,12 @@ func start_dash():
 	#SIN ESTO, SI EL NODO Timer NO TIENE "One Shot" ACTIVADO EN EL INSPECTOR, SE REPITE SOLO EN BUCLE
 	#Y dashing() NUNCA VUELVE A DAR "false", ASÍ QUE EL DASH NO SE DESACTIVA NUNCA
 	$Timer.one_shot = true
+	#VARIABLE QUE DETECTA CUANDO FUE EL ULTIMO MOMENTO QUE SE USO EL DASH
+	var L_dash = Time.get_ticks_msec()
+	#CONDICIONAL QUE DETECTA CUANDO EL COOLDOWN ES MAYOR QUE EL ULTIMO MOMENTO QUE SE PRESIONO EL DASH
+	if (L_dash - last_dash) < Dash_CD:
+		return
+	last_dash = L_dash
 	#SE AGREGÓ ESTA LÍNEA: BLOQUEA NUEVOS DASHES HASTA QUE TERMINE EL COOLDOWN
 	can_dash = false
 	$Timer.wait_time = dash_time

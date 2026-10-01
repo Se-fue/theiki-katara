@@ -294,7 +294,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Run",
-"speed": 5.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -323,7 +323,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"Walk",
-"speed": 5.0
+"speed": 9.0
 }]
 
 [node name="Player" type="CharacterBody2D" unique_id=1912176587]
@@ -337,7 +337,7 @@ shape = SubResource("CapsuleShape2D_sxabf")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=83834864]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_gxio1")
-animation = &"Jump"
+animation = &"Walk"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=367666204]
 zoom = Vector2(1.5, 1.5)
