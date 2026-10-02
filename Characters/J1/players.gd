@@ -16,6 +16,8 @@ extends CharacterBody2D
 @onready var Gravity : float = 0.02
 #DURACION DEL DASH
 @onready var dash_time : float = 0.25
+#DOBLE SALTO
+@onready var Db_jump : float = -500
 
 #VARIABLE QUE DETERMINA A QUE LADO MIRA EL PERSONAJE
 var mira = 1
@@ -27,6 +29,8 @@ var is_dashing : bool = false
 var can_dash : bool = true
 #VARIABLE QUE DETECTA CUANDO FUE EL ULTIMO MOMENTO QUE SE USO EL DASH
 var last_dash = Time.get_ticks_msec()
+#VRIABLE CONDICIONAL PARA DETERMINAR SI SE PUEDE HACER 2DO SALTO
+var D_jump = 1
 
 # ESTADOS DEL PERSONAJE
 enum mov_states {
@@ -36,7 +40,8 @@ enum mov_states {
 	jump,
 	fall,
 	dash,
-	atack
+	atack,
+	d_jump
 }
 
 var cur_mov_state : mov_states = mov_states.idle
@@ -57,15 +62,25 @@ func _physics_process(delta: float) -> void:
 		
 	if not is_on_floor():
 		velocity += get_gravity() * Gravity
+		if can_double_jump():
+			if Input.is_action_just_released("Jump") and velocity.y < 0:
+				velocity.y = Db_jump / 15
+				
+			if Input.is_action_just_pressed("Jump"):
+				velocity.y = Db_jump
+				D_jump = 0
 		
 	#DETECTA CUANDO SE SUELTA EL SALTO
 	if Input.is_action_just_released("Jump") and velocity.y < 0:
-		velocity.y = Jump / 10
+		velocity.y = Jump / 15
 		
 	#DETECTA CUANDO SE PRESIONA EL SALTO
 	if Input.is_action_just_pressed("Jump") and is_on_floor():
 		velocity.y = Jump
-		
+	
+	if is_on_floor():
+		D_jump = 1
+	
 	#CUANDO DASH ES VERDADERO CAMBIA LA GRAVEDAD Y LA VELOCIDAD
 	if(dashing()):	
 		current_speed = Dash_speed
@@ -122,6 +137,9 @@ func _physics_process(delta: float) -> void:
 			velocity.x = Dash_speed * mira * -1
 			velocity.y = 0
 			$AnimatedSprite2D.play("Dash")
+			
+		mov_states.d_jump:
+			$AnimatedSprite2D.play("Jump")
 	
 	move_and_slide()
 	print(current_speed)
@@ -149,6 +167,9 @@ func start_dash():
 #DEBES CONECTAR LA SEÑAL "timeout" DEL NODO Timer A ESTA FUNCIÓN DESDE EL PANEL DE NODO -> SEÑALES
 func _on_timer_timeout():
 	can_dash = true
+
+func can_double_jump() -> bool:
+	return D_jump > 0
 
 func _input(event):
 	#DASH AL PRESIONAR LA TECLA
