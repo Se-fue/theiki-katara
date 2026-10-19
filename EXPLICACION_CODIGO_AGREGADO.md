@@ -68,4 +68,3 @@ El enemigo no se agregó directamente a `Z1N1`; su escena permanece independient
 ## 4. Archivos originales protegidos
 
 Los mapas `Z1N1.tscn` y `Z1H1.tscn` no fueron modificados. Las incorporaciones se mantienen en carpetas independientes y el único cambio del jugador está limitado a la función visual de ataque explicada anteriormente.
-

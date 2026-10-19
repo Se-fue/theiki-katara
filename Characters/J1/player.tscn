@@ -11,8 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://ba5wgsjcodnb1" path="res://Characters/J1/Idle/lol_superman4.png" id="6_fno41"]
 [ext_resource type="Texture2D" uid="uid://bfquqaclnp4gy" path="res://Characters/J1/Idle/lol_superman5.png" id="7_r8lnu"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sxabf"]
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_u6a7n"]
 atlas = ExtResource("2_igvki")
 region = Rect2(0, 0, 80, 65)
@@ -326,23 +324,59 @@ animations = [{
 "speed": 9.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sxabf"]
+radius = 5.1181912
+height = 29.032686
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_igvki"]
+height = 48.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_u6a7n"]
+
 [node name="Player" type="CharacterBody2D" unique_id=1912176587]
 script = ExtResource("1_ynmw8")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2116381143]
-position = Vector2(0, 7)
-scale = Vector2(1.1722891, 1.584421)
-shape = SubResource("CapsuleShape2D_sxabf")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=83834864]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_gxio1")
 animation = &"Walk"
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=367666204]
-zoom = Vector2(1.5, 1.5)
-
 [node name="Timer" type="Timer" parent="." unique_id=86787023]
 one_shot = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2116381143]
+position = Vector2(0, 9)
+scale = Vector2(1.1722891, 1.584421)
+shape = SubResource("CapsuleShape2D_sxabf")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=367666204]
+position = Vector2(-1, -52)
+zoom = Vector2(1.5, 1.5)
+limit_enabled = false
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=107966250]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1033590795]
+position = Vector2(0, 9)
+shape = SubResource("CapsuleShape2D_igvki")
+debug_color = Color(0.68329424, 0.50019264, 0.124454, 0.41960785)
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=371219247]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1166018333]
+position = Vector2(-26, 6)
+scale = Vector2(2.5722957, 1.3751727)
+shape = SubResource("CircleShape2D_u6a7n")
+debug_color = Color(0.7, 0, 0.011666489, 0.41960785)
+
+[node name="poc" type="Node2D" parent="." unique_id=1380828600]
+position = Vector2(-1, -52)
+
+[node name="LC" type="Node2D" parent="." unique_id=1865750609]
+position = Vector2(-1, -95)
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

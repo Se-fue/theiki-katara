@@ -9,7 +9,7 @@ extends CharacterBody2D
 #TIEMPO DE MANTENERSE PRESIONADO EL BOTON
 @onready var Jump_T : float = 0.4
 #FUERZA DEL DASH
-@onready var Dash_speed : float = 700
+@onready var Dash_speed : float = 850
 #COOLDOWN DEL DASH
 @onready var Dash_CD : float = 1700
 #GRAVEDAD
@@ -18,6 +18,10 @@ extends CharacterBody2D
 @onready var dash_time : float = 0.25
 #DOBLE SALTO
 @onready var Db_jump : float = -500
+#CAMARA
+@onready var camara = $Camera2D
+#POSICION ORIGINAL DE LA CAMARA
+@onready var POC = $poc
 
 #VARIABLE QUE DETERMINA A QUE LADO MIRA EL PERSONAJE
 var mira = 1
@@ -29,8 +33,9 @@ var is_dashing : bool = false
 var can_dash : bool = true
 #VARIABLE QUE DETECTA CUANDO FUE EL ULTIMO MOMENTO QUE SE USO EL DASH
 var last_dash = Time.get_ticks_msec()
-#VRIABLE CONDICIONAL PARA DETERMINAR SI SE PUEDE HACER 2DO SALTO
+#VARIABLE CONDICIONAL PARA DETERMINAR SI SE PUEDE HACER 2DO SALTO
 var D_jump = 1
+
 
 # ESTADOS DEL PERSONAJE
 enum mov_states {
@@ -62,6 +67,7 @@ func _physics_process(delta: float) -> void:
 		
 	if not is_on_floor():
 		velocity += get_gravity() * Gravity
+		#SI NO ESTA EN EL SUELO Y QUEDAN SALTOS RESTANTES SE PUEDE HACER DOBLE SALTO
 		if can_double_jump():
 			if Input.is_action_just_released("Jump") and velocity.y < 0:
 				velocity.y = Db_jump / 15
@@ -81,6 +87,11 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		D_jump = 1
 	
+	#DETECTA CUANDO SE PRESIONA W PARA MOVER LA CAMARA UN POCO MAS ARRIBA
+	if Input.is_action_pressed("Up") and is_on_floor():
+		camara.position.y = camara.position.y - 7
+	else:
+		camara.position.y = POC.position.y
 	#CUANDO DASH ES VERDADERO CAMBIA LA GRAVEDAD Y LA VELOCIDAD
 	if(dashing()):	
 		current_speed = Dash_speed
@@ -139,7 +150,10 @@ func _physics_process(delta: float) -> void:
 			$AnimatedSprite2D.play("Dash")
 			
 		mov_states.d_jump:
-			$AnimatedSprite2D.play("Jump")
+			$AnimatedSprite2D.play("D_Jump")
+			D_jump = 0
+			var target_speed = Speed_run if Input.is_action_pressed("Sprint") else Speed
+			velocity.x = move_toward(velocity.x, direction * target_speed, target_speed * delta * 4)
 	
 	move_and_slide()
 	print(current_speed)
@@ -168,9 +182,11 @@ func start_dash():
 func _on_timer_timeout():
 	can_dash = true
 
+#FUNCION QUE VERIFICA QUE SE PUEDE HACER DOBLE SALTO, EVALUA SI ES TRUE O FALSO
 func can_double_jump() -> bool:
 	return D_jump > 0
-
+	
+	
 func _input(event):
 	#DASH AL PRESIONAR LA TECLA
 	if Input.is_action_just_pressed("Sprint") and can_dash and not dashing():
