@@ -376,7 +376,10 @@ debug_color = Color(0.7, 0, 0.011666489, 0.41960785)
 [node name="poc" type="Node2D" parent="." unique_id=1380828600]
 position = Vector2(-1, -52)
 
-[node name="LC" type="Node2D" parent="." unique_id=1865750609]
+[node name="LCU" type="Node2D" parent="." unique_id=1865750609]
 position = Vector2(-1, -95)
+
+[node name="LCD" type="Node2D" parent="." unique_id=777619613]
+position = Vector2(-1, -13)
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

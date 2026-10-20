@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://dvei4m2fs5tyl"]
-
-[ext_resource type="Script" uid="uid://koovkmg02q36" path="res://pantalla_de_muerte.gd" id="1_1pv4w"]
-
-[node name="CanvasLayer" type="CanvasLayer" unique_id=1997269512]
-script = ExtResource("1_1pv4w")

@@ -35,6 +35,8 @@ var can_dash : bool = true
 var last_dash = Time.get_ticks_msec()
 #VARIABLE CONDICIONAL PARA DETERMINAR SI SE PUEDE HACER 2DO SALTO
 var D_jump = 1
+#VARIABLE QUE DICE CUANDO LA CAMARA SE ESTA MOVIENDO
+
 
 
 # ESTADOS DEL PERSONAJE
@@ -46,7 +48,9 @@ enum mov_states {
 	fall,
 	dash,
 	atack,
-	d_jump
+	d_jump,
+	seeup,
+	seedown
 }
 
 var cur_mov_state : mov_states = mov_states.idle
@@ -87,9 +91,11 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		D_jump = 1
 	
-	#DETECTA CUANDO SE PRESIONA W PARA MOVER LA CAMARA UN POCO MAS ARRIBA
+	#DETECTA CUANDO SE PRESIONA W O S PARA CAMBIAR LA ALTURA DE LA CAMARA
 	if Input.is_action_pressed("Up") and is_on_floor():
-		camara.position.y = camara.position.y - 7
+		camara.position.y = $LCU.position.y
+	elif Input.is_action_pressed("Down") and is_on_floor():
+		camara.position.y = $LCD.position.y
 	else:
 		camara.position.y = POC.position.y
 	#CUANDO DASH ES VERDADERO CAMBIA LA GRAVEDAD Y LA VELOCIDAD
@@ -152,8 +158,19 @@ func _physics_process(delta: float) -> void:
 		mov_states.d_jump:
 			$AnimatedSprite2D.play("D_Jump")
 			D_jump = 0
-			var target_speed = Speed_run if Input.is_action_pressed("Sprint") else Speed
-			velocity.x = move_toward(velocity.x, direction * target_speed, target_speed * delta * 4)
+			velocity.y < 0
+			
+		mov_states.seeup:
+			$AnimatedSprite2D.play("See_up")
+			velocity.x = 0
+			velocity.y = 0
+			
+			
+		mov_states.seedown:
+			$AnimatedSprite2D.play("See_down")
+			velocity.x = 0
+			velocity.y = 0
+			
 	
 	move_and_slide()
 	print(current_speed)
@@ -191,6 +208,4 @@ func _input(event):
 	#DASH AL PRESIONAR LA TECLA
 	if Input.is_action_just_pressed("Sprint") and can_dash and not dashing():
 		start_dash()
-	
-	
 	
