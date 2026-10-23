@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://dy8s110u371ej"]
+
+[ext_resource type="Script" uid="uid://dxcgy30af5mp5" path="res://eazn.gd" id="1_gofht"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sehic"]
+
+[node name="Area2D" type="Area2D" unique_id=690703603]
+script = ExtResource("1_gofht")
+NSP = "D:/Godot/theiki-katara/Niveles/Zonas/Z1/Z1H2.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=220676759]
+scale = Vector2(2.333333, 2.5000005)
+shape = SubResource("RectangleShape2D_sehic")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

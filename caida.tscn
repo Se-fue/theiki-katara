@@ -3,7 +3,23 @@
 [ext_resource type="Script" uid="uid://ddxsb1iv4ikrh" path="res://caida.gd" id="1_nn7f5"]
 
 [sub_resource type="GDScript" id="GDScript_41byb"]
-script/source = "extends Node2D
+script/source = "extends Area2D
+
+#ESCENA A LA QUE LLEVA (SE ELIGE EN EL INSPECTOR)
+@export_file(\"*.tscn\") var escena_destino : String
+#NOMBRE DEL Marker2D DONDE APARECERAS EN LA ESCENA DESTINO
+@export var id_spawn : String = \"\"
+#SI ESTA ACTIVO, ESTA PUERTA TE REGRESA POR DONDE ENTRASTE (IGNORA escena_destino)
+@export var regresar : bool = false
+
+func _ready() -> void:
+	body_entered.connect(_on_body_entered)
+
+func _on_body_entered(body: Node2D) -> void:
+	#SOLO REACCIONA AL JUGADOR
+	if not body is CharacterBody2D:
+		return
+	Transicion.ir_a(escena_destino, id_spawn, regresar)
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bb385"]

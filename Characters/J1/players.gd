@@ -35,7 +35,6 @@ var can_dash : bool = true
 var last_dash = Time.get_ticks_msec()
 #VARIABLE CONDICIONAL PARA DETERMINAR SI SE PUEDE HACER 2DO SALTO
 var D_jump = 1
-#VARIABLE QUE DICE CUANDO LA CAMARA SE ESTA MOVIENDO
 
 
 
@@ -69,6 +68,8 @@ func _physics_process(delta: float) -> void:
 		mira = 1
 		$AnimatedSprite2D.scale.x = 1
 		
+	camara.position.y = POC.position.y
+	
 	if not is_on_floor():
 		velocity += get_gravity() * Gravity
 		#SI NO ESTA EN EL SUELO Y QUEDAN SALTOS RESTANTES SE PUEDE HACER DOBLE SALTO
@@ -79,6 +80,7 @@ func _physics_process(delta: float) -> void:
 			if Input.is_action_just_pressed("Jump"):
 				velocity.y = Db_jump
 				D_jump = 0
+				cur_mov_state = mov_states.d_jump
 		
 	#DETECTA CUANDO SE SUELTA EL SALTO
 	if Input.is_action_just_released("Jump") and velocity.y < 0:
@@ -88,16 +90,12 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("Jump") and is_on_floor():
 		velocity.y = Jump
 	
+	#RECUPERA EL DOBLE SALTO
 	if is_on_floor():
 		D_jump = 1
 	
-	#DETECTA CUANDO SE PRESIONA W O S PARA CAMBIAR LA ALTURA DE LA CAMARA
-	if Input.is_action_pressed("Up") and is_on_floor():
-		camara.position.y = $LCU.position.y
-	elif Input.is_action_pressed("Down") and is_on_floor():
-		camara.position.y = $LCD.position.y
-	else:
-		camara.position.y = POC.position.y
+	
+
 	#CUANDO DASH ES VERDADERO CAMBIA LA GRAVEDAD Y LA VELOCIDAD
 	if(dashing()):	
 		current_speed = Dash_speed
@@ -111,7 +109,13 @@ func _physics_process(delta: float) -> void:
 	if dashing():
 		cur_mov_state = mov_states.dash
 	elif not is_on_floor():
-		cur_mov_state = mov_states.fall if velocity.y >= 0 else mov_states.jump
+		if velocity.y < 0:
+			if D_jump == 0:
+				cur_mov_state = mov_states.d_jump
+			else:
+				cur_mov_state = mov_states.jump
+		else:
+			cur_mov_state = mov_states.fall
 	elif Input.is_action_just_pressed("Jump"):
 		cur_mov_state = mov_states.jump
 	elif direction != 0:
@@ -121,6 +125,12 @@ func _physics_process(delta: float) -> void:
 			cur_mov_state = mov_states.walk
 	else:
 		cur_mov_state = mov_states.idle
+		if Input.is_action_pressed("Up"):
+			cur_mov_state = mov_states.seeup
+		elif Input.is_action_pressed("Down"):
+			cur_mov_state = mov_states.seedown
+		
+		
 		
 	#DETERMINA EL ESTADO ACTUAL
 	match cur_mov_state:
@@ -128,53 +138,60 @@ func _physics_process(delta: float) -> void:
 			current_speed = 0.0
 			velocity.x = move_toward(velocity.x, 0, Speed)
 			$AnimatedSprite2D.play("Idle")
+			
 
 		mov_states.walk:
 			current_speed = Speed
 			velocity.x = direction * current_speed
 			$AnimatedSprite2D.play("Walk")
+			camara.position.y = POC.position.y
 
 		mov_states.run:
 			current_speed = Speed_run
 			velocity.x = direction * current_speed
 			$AnimatedSprite2D.play("Run")
+			camara.position.y = POC.position.y
 
 		mov_states.jump:
 			$AnimatedSprite2D.play("Jump")
 			var target_speed = Speed_run if Input.is_action_pressed("Sprint") else Speed
 			velocity.x = move_toward(velocity.x, direction * target_speed, target_speed * delta * 4)
+			camara.position.y = POC.position.y
 
 		mov_states.fall:
 			$AnimatedSprite2D.play("Fall")
 			var target_speed = Speed_run if Input.is_action_pressed("Sprint") else Speed
 			velocity.x = move_toward(velocity.x, direction * target_speed, target_speed * delta * 4)
+			camara.position.y = POC.position.y
 
 		mov_states.dash:
 			# Durante el dash, la velocidad se fija y no la toca la gravedad ni el input normal
 			velocity.x = Dash_speed * mira * -1
 			velocity.y = 0
 			$AnimatedSprite2D.play("Dash")
+			camara.position.y = POC.position.y
 			
 		mov_states.d_jump:
 			$AnimatedSprite2D.play("D_Jump")
 			D_jump = 0
-			velocity.y < 0
+			camara.position.y = POC.position.y
 			
 		mov_states.seeup:
 			$AnimatedSprite2D.play("See_up")
-			velocity.x = 0
-			velocity.y = 0
-			
-			
+			current_speed = 0
+			camara.position.y = $LCU.position.y
+			velocity.x = move_toward(velocity.x, 0, Speed)
+				
 		mov_states.seedown:
 			$AnimatedSprite2D.play("See_down")
-			velocity.x = 0
-			velocity.y = 0
+			current_speed = 0
+			camara.position.y = $LCD.position.y
+			velocity.x = move_toward(velocity.x, 0, Speed)
 			
 	
 	move_and_slide()
 	print(current_speed)
-
+	
 func dashing():
 	return not $Timer.is_stopped()
 
