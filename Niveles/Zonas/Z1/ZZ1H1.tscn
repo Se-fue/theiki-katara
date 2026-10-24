@@ -171,6 +171,7 @@ centered = false
 
 [node name="Player" parent="." unique_id=1912176587 instance=ExtResource("2_rcdd3")]
 position = Vector2(515, 411)
+scale = Vector2(1, 0.9992302)
 
 [node name="Area2D" parent="." unique_id=690703603 instance=ExtResource("9_1cd6m")]
 position = Vector2(931, 557)
