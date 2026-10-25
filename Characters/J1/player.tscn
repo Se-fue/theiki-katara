@@ -328,7 +328,7 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_sxabf"]
-radius = 5.1181912
+radius = 5.0923815
 height = 29.032686
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_igvki"]
@@ -349,7 +349,7 @@ one_shot = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2116381143]
 position = Vector2(0, 9)
-scale = Vector2(1.1722891, 1.584421)
+scale = Vector2(1.3746024, 1.6498353)
 shape = SubResource("CapsuleShape2D_sxabf")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=367666204]
@@ -404,6 +404,7 @@ texture = ExtResource("12_r8lnu")
 stretch_mode = 1
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=107966250]
+unique_name_in_owner = true
 collision_layer = 4
 collision_mask = 4
 
@@ -433,5 +434,16 @@ position = Vector2(-1, -13)
 
 [node name="Inventory" type="Node" parent="." unique_id=1243125549]
 script = ExtResource("11_u6a7n")
+
+[node name="Recolection" type="Area2D" parent="." unique_id=1618771019]
+unique_name_in_owner = true
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Recolection" unique_id=319920917]
+z_index = -1
+position = Vector2(0, 9)
+shape = SubResource("CapsuleShape2D_igvki")
+debug_color = Color(0.80572516, 0.32381496, 0.6771205, 0.41960785)
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
